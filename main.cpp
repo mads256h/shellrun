@@ -28,11 +28,10 @@ int main(int argc, char **argv) {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
   uint8_t *const fileData = new uint8_t[len];
 #else
-
-  auto pagesize = sysconf(_SC_PAGE_SIZE);
+  const auto pagesize = sysconf(_SC_PAGE_SIZE);
 
   uint8_t *const fileData =
-      static_cast<uint8_t *>(memalign(pagesize, 4 * pagesize));
+      static_cast<uint8_t *>(memalign(pagesize, len));
 #endif
 
   std::ifstream file(argv[argc - 1], std::ifstream::binary);
