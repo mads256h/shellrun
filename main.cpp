@@ -73,8 +73,8 @@ int main(int argc, char **argv) {
     memcpy(shellcode, clear, sizeof(clear));
   }
   if (((int)flag & (int)::flags::debug) == (int)flags::debug) {
-    i += sizeof(int3);
     memcpy(shellcode + i, int3, sizeof(int3));
+    i += sizeof(int3);
   }
 
   memcpy(shellcode + i, fileData, len);
