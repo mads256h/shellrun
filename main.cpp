@@ -66,13 +66,13 @@ int main(int argc, char **argv) {
       static_cast<uint8_t *>(memalign(pagesize, final_len));
 #endif
 
-  memset(shellcode, 0, final_len);
+  memset(shellcode, 0x90, final_len);
 
   size_t i = 0;
 
   if (((int)flag & (int)::flags::clear) == (int)flags::clear) {
     memcpy(shellcode, clear, sizeof(clear));
-    i += sizeof(clear) + 10;
+    i += sizeof(clear) + 5;
   }
   if (((int)flag & (int)::flags::debug) == (int)flags::debug) {
     memcpy(shellcode + i, int3, sizeof(int3));
