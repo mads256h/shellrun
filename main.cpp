@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <cstring>
 
+#include <sys/stat.h>
+
 #include <fstream>
 #include <iostream>
 
@@ -19,7 +21,7 @@ int main(int argc, char **argv) {
   }
 
   struct stat stat_buf;
-  int rc = stat(argv[argc - 1], &stat_buf);
+  const auto rc = stat(argv[argc - 1], &stat_buf);
   const auto len = rc == 0 ? stat_buf.st_size : -1;
 
   uint8_t *const fileData = new uint8_t[len];
