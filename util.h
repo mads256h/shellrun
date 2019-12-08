@@ -46,9 +46,7 @@
 #include <unistd.h>
 #define MPROTECT(shellcode, length)                                            \
   {                                                                            \
-    long pagesize = sysconf(_SC_PAGE_SIZE);                                    \
-    long page_no = (long)shellcode / pagesize;                                 \
-    int res = mprotect((void *)(page_no * pagesize), (long)page_no + length,   \
+    int res = mprotect(shellcode + pagesize * 2, pagesize,                     \
                        PROT_EXEC | PROT_READ | PROT_WRITE);                    \
     if (res) {                                                                 \
       fprintf(stderr, "mprotect error:%d\n", res);                             \
