@@ -35,6 +35,7 @@ int main(int argc, char **argv) {
       flag = (::flags)((int)flag | (int)flags::clear);
     } else {
       std::cerr << "Invalid argument" << std::endl;
+      return 1;
     }
   }
 
@@ -79,6 +80,10 @@ int main(int argc, char **argv) {
   memcpy(shellcode + i, fileData, len);
 
   MPROTECT(shellcode, len);
+
+  if (((int)flag & (int)::flags::debug) == (int)flags::debug) {
+    DEBUGBREAK();
+  }
 
   ((void (*)(void))shellcode)();
 
