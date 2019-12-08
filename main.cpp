@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
 
   if (((int)flag & (int)::flags::clear) == (int)flags::clear) {
     memcpy(shellcode, clear, sizeof(clear));
-    i += sizeof(clear) + 1;
+    i += sizeof(clear) - 1;
   }
   if (((int)flag & (int)::flags::debug) == (int)flags::debug) {
     memcpy(shellcode + i, int3, sizeof(int3));
