@@ -26,8 +26,7 @@ const uint8_t clear[] = {
     0x4D_u8, 0x31_u8, 0xF6_u8, // xor    r14,r14
     0x4D_u8, 0x31_u8, 0xFF_u8, // xor    r15,r15
     // Reset stack
-    0x48_u8, 0x89_u8, 0xEC_u8, // mov    rsp,rbp
-    0x33_u8
+    0x48_u8, 0x89_u8, 0xEC_u8 // mov    rsp,rbp
 };
 #else
 // 32-bit version
@@ -40,8 +39,8 @@ const uint8_t clear[] = {
     0x31_u8, 0xF6_u8, // xor    esi,esi
     0x31_u8, 0xFF_u8, // xor    edi,edi
     // Reset stack
-    0x89_u8, 0xEC_u8 // mov    esp,ebp
-};
+    0x89_u8, 0xEC_u8, // mov    esp,ebp
+    0x33_u8};
 #endif
 
 #endif
