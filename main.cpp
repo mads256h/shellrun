@@ -13,6 +13,7 @@
 #include "util.h"
 
 enum class flags {
+  none = 0,
   debug = 1 << 0,
   clear = 1 << 1,
 };
@@ -26,7 +27,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  flags flag;
+  flags flag = flags::none;
 
   for (int i = 1; i < argc - 1; i++) {
     if (strcmp(argv[i], "--debug") == 0) {
