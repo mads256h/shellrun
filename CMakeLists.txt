@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 # Project name
 project(ShellCodeRunner VERSION 0.1)
 
-configure_file(config.h.in config.h)
+configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${PROJECT_SOURCE_DIR}/config.h @ONLY)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
