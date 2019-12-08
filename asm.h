@@ -5,7 +5,7 @@
 
 #include "util.h"
 
-const uint8_t int3[] = {0x33_u8};
+const uint8_t int3[] = {0xCC_u8};
 
 #ifdef ENVIRONMENT64
 // 64-bit version
@@ -40,7 +40,7 @@ const uint8_t clear[] = {
     0x31_u8, 0xFF_u8, // xor    edi,edi
     // Reset stack
     0x89_u8, 0xEC_u8, // mov    esp,ebp
-    0x33_u8};
+    0xCC_u8};
 #endif
 
 #endif
