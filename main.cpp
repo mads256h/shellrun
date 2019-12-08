@@ -1,46 +1,50 @@
-
-
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
-#include <cstdint>
 
+#include <filesystem>
 #include <fstream>
+#include <iostream>
+
+#include "util.h"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
 #include <Windows.h>
 #endif
 
-void print_usage(){
-    puts("USAGE\nShellCodeRunner.exe file");
-}
+void print_usage() { puts("USAGE\nShellCodeRunner.exe file"); }
 
-int main(int argc, char** argv){
-    if (argc == 1 || argc > 2){
+int main(int argc, char** argv) {
+    if (argc == 1 || argc > 2) {
         print_usage();
         return 1;
     }
+    const auto fs = std::filesystem::current_path() / argv[1];
+    const auto len = std::filesystem::file_size(fs);
+    uint8_t* const data = new uint8_t[len];
 
-    std::ifstream file(argv[1]);
-    file.seekg(0, std::ios::end);
-    size_t len = file.tellg();
-    uint8_t *data = new uint8_t[len];
+    std::ifstream file(argv[1], std::ifstream::binary);
+
     file.read((char*)&data[0], len);
+    DEBUGBREAK();
+
     file.close();
 
-    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
     DWORD why_must_this_variable;
-   BOOL ret = VirtualProtect (data, len,
-    PAGE_EXECUTE_READWRITE, &why_must_this_variable);
+    BOOL ret = VirtualProtect(data, len, PAGE_EXECUTE_READWRITE,
+        &why_must_this_variable);
 
-  if (!ret) {
-    printf ("VirtualProtect\n");
-    return EXIT_FAILURE;
-  }
-    #endif
+    if (!ret) {
+        printf("VirtualProtect\n");
+        return EXIT_FAILURE;
+    }
+    puts("Hello world!");
+#endif
 
-    int (*func)();
-    func = (int(*)()) data;
-    (int)(*func)();
+    DEBUGBREAK();
+
+    ((void (*)(void))data)();
 
     return 0;
 }
