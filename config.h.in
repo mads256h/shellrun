@@ -1,0 +1,2 @@
+#define ShellCodeRunner_VERSION_MAJOR @ShellCodeRunner_VERSION_MAJOR@
+#define ShellCodeRunner_VERSION_MINOR @ShellCodeRunner_VERSION_MINOR@
