@@ -31,7 +31,8 @@ int main(int argc, char **argv) {
 
   auto pagesize = sysconf(_SC_PAGE_SIZE);
 
-  uint8_t *const fileData = memalign(pagesize, 4 * pagesize);
+  uint8_t *const fileData =
+      static_cast<uint8_t *>(memalign(pagesize, 4 * pagesize));
 #endif
 
   std::ifstream file(argv[argc - 1], std::ifstream::binary);
