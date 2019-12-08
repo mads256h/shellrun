@@ -31,9 +31,10 @@ int main(int argc, char **argv) {
   for (int i = 1; i < argc - 1; i++) {
     if (strcmp(argv[i], "--debug") == 0) {
       flag = (::flags)((int)flag | (int)flags::debug);
-    }
-    if (strcmp(argv[i], "--clear") == 0) {
+    } else if (strcmp(argv[i], "--clear") == 0) {
       flag = (::flags)((int)flag | (int)flags::clear);
+    } else {
+      std::cerr << "Invalid argument" << std::endl;
     }
   }
 
