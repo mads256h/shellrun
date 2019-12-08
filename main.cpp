@@ -23,7 +23,12 @@ int main(int argc, char **argv) {
     // report version
     std::cout << argv[0] << " Version " << ShellCodeRunner_VERSION_MAJOR << "."
               << ShellCodeRunner_VERSION_MINOR << std::endl
-              << "Usage: " << argv[0] << "[flags] file" << std::endl;
+              << "Usage: " << argv[0] << " [flags] file" << std::endl
+              << "Flags" << std::endl
+              << "--debug   Set a breakpoint just before shellcode executes"
+              << std::endl
+              << "--clear   Clear all registers before running the shellcode"
+              << std::endl;
     return 1;
   }
 
