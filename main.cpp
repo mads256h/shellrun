@@ -81,10 +81,6 @@ int main(int argc, char **argv) {
 
   MPROTECT(shellcode, len);
 
-  if (((int)flag & (int)::flags::debug) == (int)flags::debug) {
-    DEBUGBREAK();
-  }
-
   ((void (*)(void))shellcode)();
 
   return 0;
