@@ -66,6 +66,8 @@ int main(int argc, char **argv) {
       static_cast<uint8_t *>(memalign(pagesize, final_len));
 #endif
 
+  memset(shellcode, 0, final_len);
+
   size_t i = 0;
 
   if (((int)flag & (int)::flags::clear) == (int)flags::clear) {
