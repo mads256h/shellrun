@@ -2,13 +2,12 @@
 #include <cstdio>
 #include <cstring>
 
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 
+#include "asm.h"
 #include "config.h"
 #include "util.h"
-#include "asm.h"
 
 int main(int argc, char **argv) {
   if (argc == 1) {
@@ -19,11 +18,13 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  const auto fs = std::filesystem::current_path() / argv[argc - 1];
-  const auto len = std::filesystem::file_size(fs);
+  struct stat stat_buf;
+  int rc = stat(argv[argc - 1], &stat_buf);
+  const auto len = rc == 0 ? stat_buf.st_size : -1;
+
   uint8_t *const fileData = new uint8_t[len];
 
-  std::ifstream file(argv[1], std::ifstream::binary);
+  std::ifstream file(argv[argc - 1], std::ifstream::binary);
   file.read((char *)&fileData[0], len);
   file.close();
 

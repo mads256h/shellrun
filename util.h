@@ -39,8 +39,8 @@
     }                                                                          \
   }
 #else
-#include <unistd.h>
 #include <sys/mman.h>
+#include <unistd.h>
 #define MPROTECT(shellcode, length)                                            \
   {                                                                            \
     long pagesize = sysconf(_SC_PAGE_SIZE);                                    \
