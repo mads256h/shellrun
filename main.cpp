@@ -74,12 +74,12 @@ int main(int argc, char **argv) {
     memcpy(shellcode, clear, sizeof(clear));
     i += sizeof(clear);
   }
-  //   if (((int)flag & (int)::flags::debug) == (int)flags::debug) {
-  //     memcpy(shellcode + i, int3, sizeof(int3));
-  //     i += sizeof(int3) + 10;
-  //   }
+  if (((int)flag & (int)::flags::debug) == (int)flags::debug) {
+    memcpy(shellcode + i, int3, sizeof(int3));
+    i += sizeof(int3);
+  }
 
-  //   memcpy(shellcode + i, fileData, len);
+  memcpy(shellcode + i, fileData, len);
 
   MPROTECT(shellcode, len);
 
