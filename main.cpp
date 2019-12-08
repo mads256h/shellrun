@@ -55,7 +55,6 @@ int main(int argc, char **argv) {
   if (((int)flag & (int)::flags::clear) == (int)flags::clear) {
     final_len += sizeof(clear);
   }
-  uint8_t *const shellcode = new uint8_t[final_len];
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
   uint8_t *const shellcode = new uint8_t[final_len];
