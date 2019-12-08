@@ -52,7 +52,8 @@
                        PROT_EXEC | PROT_READ | PROT_WRITE);                    \
     if (res) {                                                                 \
       fprintf(stderr, "mprotect error:%d\n", res);                             \
-      fprintf(stderr, "errno:%d\n", errno) return 1;                           \
+      fprintf(stderr, "errno:%d\n", errno);                                    \
+      return 1;                                                                \
     }                                                                          \
   }
 #endif
