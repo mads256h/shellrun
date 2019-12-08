@@ -69,8 +69,8 @@ int main(int argc, char **argv) {
   size_t i = 0;
 
   if (((int)flag & (int)::flags::clear) == (int)flags::clear) {
-    i += sizeof(clear);
     memcpy(shellcode, clear, sizeof(clear));
+    i += sizeof(clear);
   }
   if (((int)flag & (int)::flags::debug) == (int)flags::debug) {
     memcpy(shellcode + i, int3, sizeof(int3));
