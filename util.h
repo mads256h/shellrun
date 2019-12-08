@@ -46,8 +46,8 @@
 #include <unistd.h>
 #define MPROTECT(shellcode, length)                                            \
   {                                                                            \
-    int res = mprotect(shellcode + pagesize * 2, pagesize,                     \
-                       PROT_EXEC | PROT_READ | PROT_WRITE);                    \
+    int res =                                                                  \
+        mprotect(shellcode, pagesize, PROT_EXEC | PROT_READ | PROT_WRITE);     \
     if (res) {                                                                 \
       fprintf(stderr, "mprotect error:%d\n", res);                             \
       fprintf(stderr, "errno:%d\n", errno);                                    \
