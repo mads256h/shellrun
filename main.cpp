@@ -29,7 +29,7 @@ int main(int argc, char** argv){
 
     #if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
     DWORD why_must_this_variable;
-  BOOL ret = VirtualProtect (data, len,
+   BOOL ret = VirtualProtect (data, len,
     PAGE_EXECUTE_READWRITE, &why_must_this_variable);
 
   if (!ret) {
