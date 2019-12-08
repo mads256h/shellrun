@@ -1,5 +1,6 @@
 #ifdef _MSC_VER
-#define DEBUGBREAK() __asm {int 3}
+#include <intrins.h>
+#define DEBUGBREAK() __debugbreak()
 #endif
 #ifdef __GNUC__
 #define DEBUGBREAK() asm("int3")
