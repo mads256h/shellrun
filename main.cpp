@@ -42,13 +42,7 @@ int main(int argc, char **argv) {
   const auto rc = stat(argv[argc - 1], &stat_buf);
   const auto len = rc == 0 ? stat_buf.st_size : -1;
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
   uint8_t *const fileData = new uint8_t[len];
-#else
-  const auto pagesize = sysconf(_SC_PAGE_SIZE);
-
-  uint8_t *const fileData = static_cast<uint8_t *>(memalign(pagesize, len));
-#endif
 
   std::ifstream file(argv[argc - 1], std::ifstream::binary);
   file.read((char *)&fileData[0], len);
