@@ -1,10 +1,9 @@
+#include <malloc.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <malloc.h>
 
 #include <sys/stat.h>
-
 
 #include "asm.h"
 #include "config.h"
@@ -48,7 +47,7 @@ int main(int argc, char **argv) {
 
   uint8_t *const fileData = (uint8_t *)malloc(len);
 
-  FILE* f = fopen(argv[argc - 1], "rb");
+  FILE *f = fopen(argv[argc - 1], "rb");
 
   fread(&fileData[0], 1, len, f);
   fclose(f);
@@ -66,8 +65,7 @@ int main(int argc, char **argv) {
 #else
   const long pagesize = sysconf(_SC_PAGE_SIZE);
 
-  uint8_t *const shellcode =
-      (uint8_t *)memalign(pagesize, final_len);
+  uint8_t *const shellcode = (uint8_t *)memalign(pagesize, final_len);
 #endif
 
   memset(shellcode, 0x90, final_len);
