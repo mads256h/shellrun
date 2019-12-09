@@ -1,45 +1,45 @@
 #ifndef _ASM_H_
 #define _ASM_H_
 
-#include <cstdint>
+#include <stdint.h>
 
 #include "util.h"
 
-const uint8_t int3[] = {0xCC_u8};
+const uint8_t int3[] = {'\xCC'};
 
 #ifdef ENVIRONMENT64
 // 64-bit version
 const uint8_t clear[] = {
     // Clear all registers
-    0x48_u8, 0x31_u8, 0xC0_u8, // xor    rax,rax
-    0x48_u8, 0x31_u8, 0xDB_u8, // xor    rbx,rbx
-    0x48_u8, 0x31_u8, 0xC9_u8, // xor    rcx,rcx
-    0x48_u8, 0x31_u8, 0xD2_u8, // xor    rdx,rdx
-    0x48_u8, 0x31_u8, 0xF6_u8, // xor    rsi,rsi
-    0x48_u8, 0x31_u8, 0xFF_u8, // xor    rdi,rdi
-    0x4D_u8, 0x31_u8, 0xC0_u8, // xor    r8,r8
-    0x4D_u8, 0x31_u8, 0xC9_u8, // xor    r9,r9
-    0x4D_u8, 0x31_u8, 0xD2_u8, // xor    r10,r10
-    0x4D_u8, 0x31_u8, 0xDB_u8, // xor    r11,r11
-    0x4D_u8, 0x31_u8, 0xE4_u8, // xor    r12,r12
-    0x4D_u8, 0x31_u8, 0xED_u8, // xor    r13,r13
-    0x4D_u8, 0x31_u8, 0xF6_u8, // xor    r14,r14
-    0x4D_u8, 0x31_u8, 0xFF_u8, // xor    r15,r15
+    '\x48', '\x31', '\xC0', // xor    rax,rax
+    '\x48', '\x31', '\xDB', // xor    rbx,rbx
+    '\x48', '\x31', '\xC9', // xor    rcx,rcx
+    '\x48', '\x31', '\xD2', // xor    rdx,rdx
+    '\x48', '\x31', '\xF6', // xor    rsi,rsi
+    '\x48', '\x31', '\xFF', // xor    rdi,rdi
+    '\x4D', '\x31', '\xC0', // xor    r8,r8
+    '\x4D', '\x31', '\xC9', // xor    r9,r9
+    '\x4D', '\x31', '\xD2', // xor    r10,r10
+    '\x4D', '\x31', '\xDB', // xor    r11,r11
+    '\x4D', '\x31', '\xE4', // xor    r12,r12
+    '\x4D', '\x31', '\xED', // xor    r13,r13
+    '\x4D', '\x31', '\xF6', // xor    r14,r14
+    '\x4D', '\x31', '\xFF', // xor    r15,r15
     // Reset stack
-    0x48_u8, 0x89_u8, 0xEC_u8 // mov    rsp,rbp
+    '\x48', '\x89', '\xEC' // mov    rsp,rbp
 };
 #else
 // 32-bit version
 const uint8_t clear[] = {
     // Clear all registers
-    0x31_u8, 0xC0_u8, // xor    eax,eax
-    0x31_u8, 0xDB_u8, // xor    ebx,ebx
-    0x31_u8, 0xC9_u8, // xor    ecx,ecx
-    0x31_u8, 0xD2_u8, // xor    edx,edx
-    0x31_u8, 0xF6_u8, // xor    esi,esi
-    0x31_u8, 0xFF_u8, // xor    edi,edi
+    '\x31', '\xC0', // xor    eax,eax
+    '\x31', '\xDB', // xor    ebx,ebx
+    '\x31', '\xC9', // xor    ecx,ecx
+    '\x31', '\xD2', // xor    edx,edx
+    '\x31', '\xF6', // xor    esi,esi
+    '\x31', '\xFF', // xor    edi,edi
     // Reset stack
-    0x89_u8, 0xEC_u8, // mov    esp,ebp
+    '\x89', '\xEC', // mov    esp,ebp
 };
 #endif
 

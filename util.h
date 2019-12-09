@@ -1,7 +1,7 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
-#include <cstdint>
+#include <stdint.h>
 
 #ifdef _MSC_VER
 #define DEBUGBREAK() __asm {int 3}
@@ -56,8 +56,5 @@
   }
 #endif
 
-inline constexpr uint8_t operator"" _u8(unsigned long long arg) noexcept {
-  return static_cast<uint8_t>(arg);
-}
 
 #endif
