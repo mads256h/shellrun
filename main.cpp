@@ -6,7 +6,6 @@
 #include <sys/stat.h>
 
 #include <fstream>
-#include <iostream>
 
 #include "asm.h"
 #include "config.h"
@@ -21,14 +20,12 @@ enum class flags {
 int main(int argc, char **argv) {
   if (argc == 1) {
     // report version
-    std::cout << argv[0] << " Version " << ShellCodeRunner_VERSION_MAJOR << "."
-              << ShellCodeRunner_VERSION_MINOR << std::endl
-              << "Usage: " << argv[0] << " [flags] file" << std::endl
-              << "Flags" << std::endl
-              << "--debug   Set a breakpoint just before shellcode executes"
-              << std::endl
-              << "--clear   Clear all registers before running the shellcode"
-              << std::endl;
+    printf("%s Version %d.%d\n", argv[0], ShellCodeRunner_VERSION_MAJOR, ShellCodeRunner_VERSION_MINOR);
+    printf("Usage: %s [args] file\n", argv[0]);
+    puts("Flags\n");
+    puts(" --debug   Set a breakpoint just before shellcode executes\n");
+    puts(" --clear   Clear all registers before running the shellcode\n");
+    
     return 1;
   }
 
@@ -40,7 +37,7 @@ int main(int argc, char **argv) {
     } else if (strcmp(argv[i], "--clear") == 0) {
       flag = (::flags)((int)flag | (int)flags::clear);
     } else {
-      std::cerr << "Invalid argument" << std::endl;
+      fprintf(stderr, "Invalid argument\n");
       return 1;
     }
   }
