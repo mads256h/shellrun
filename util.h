@@ -42,6 +42,7 @@
     }                                                                          \
   }
 #else
+#include <malloc.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #define MPROTECT(shellcode, length)                                            \

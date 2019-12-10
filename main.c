@@ -1,14 +1,14 @@
 #include <errno.h>
-#include <malloc.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-
-#include <sys/stat.h>
 
 #include "asm.h"
 #include "config.h"
 #include "util.h"
+
+#define BUF_SIZE 512
 
 enum arguments {
   a_none = 0,
@@ -17,27 +17,28 @@ enum arguments {
 };
 
 void print_help(char *program_name) {
-  printf("%s Version %d.%d\n", program_name, shellrun_VERSION_MAJOR,
-         shellrun_VERSION_MINOR);
-  printf("Usage: %s [args] file\n", program_name);
-  puts("Arguments");
-  puts(" -d OR --debug   Set a breakpoint just before shellcode executes");
-  puts(" -c OR --clear   Clear all registers before running the shellcode");
-  puts(" -h OR --help    To print this help message");
+  fprintf(stderr, "%s Version %d.%d\n", program_name, shellrun_VERSION_MAJOR,
+          shellrun_VERSION_MINOR);
+  // clang-format off
+  fprintf(stderr, "Usage: %s [args] file\n", program_name);
+  fprintf(stderr, "Arguments\n");
+  fprintf(stderr, " -d OR --debug   Set a breakpoint just before shellcode executes\n");
+  fprintf(stderr, " -c OR --clear   Clear all registers before running the shellcode\n");
+  fprintf(stderr, " -h OR --help    To print this help message\n");
+  // clang-format on
 }
 
 int main(int argc, char **argv) {
   if (argc == 1) {
     // report version
     print_help(argv[0]);
-
-    return 1;
+    return EXIT_FAILURE;
   }
 
   if (strcmp(argv[argc - 1], "-h") == 0 ||
       strcmp(argv[argc - 1], "--help") == 0) {
     print_help(argv[0]);
-    return 1;
+    return EXIT_FAILURE;
   }
 
   enum arguments args = a_none;
@@ -52,22 +53,47 @@ int main(int argc, char **argv) {
       return 1;
     } else {
       fputs("Invalid argument", stderr);
-      return 1;
+      return EXIT_FAILURE;
     }
   }
 
-  struct stat stat_buf;
-  const int rc = stat(argv[argc - 1], &stat_buf);
-  const long len = rc == 0 ? stat_buf.st_size : -1;
+  FILE *f =
+      strcmp(argv[argc - 1], "-") == 0 ? stdin : fopen(argv[argc - 1], "rb");
 
-  uint8_t *const fileData = (uint8_t *)malloc(len);
+  uint8_t *fileData = (uint8_t *)malloc(BUF_SIZE);
 
-  FILE *f = fopen(argv[argc - 1], "rb");
+  if (!fileData) {
+    fputs("Could not allocate fileData", stderr);
+    return EXIT_FAILURE;
+  }
 
-  fread(&fileData[0], 1, len, f);
-  fclose(f);
+  size_t cur_size = BUF_SIZE;
+  size_t len = 0;
 
-  long final_len = len;
+  int c = EOF;
+  while ((c = getc(f)) != EOF) {
+    if (cur_size == len) {
+      cur_size += BUF_SIZE;
+      uint8_t *const d = (uint8_t *)malloc(cur_size);
+
+      if (!d) {
+        fputs("Could not allocate d", stderr);
+        return EXIT_FAILURE;
+      }
+
+      memcpy(d, fileData, len);
+      free(fileData);
+      fileData = d;
+    }
+    fileData[len] = (uint8_t)c;
+    len++;
+  }
+
+  if (strcmp(argv[argc - 1], "-") != 0) {
+    fclose(f);
+  }
+
+  size_t final_len = len;
   if ((args & a_debug) == a_debug) {
     final_len += sizeof(int3);
   }
@@ -82,6 +108,11 @@ int main(int argc, char **argv) {
 
   uint8_t *const shellcode = (uint8_t *)memalign(pagesize, final_len);
 #endif
+
+  if (!shellcode) {
+    fputs("Could not allocate shellcode", stderr);
+    return EXIT_FAILURE;
+  }
 
   memset(shellcode, 0x90, final_len);
 
@@ -98,9 +129,11 @@ int main(int argc, char **argv) {
 
   memcpy(shellcode + i, fileData, len);
 
+  free(fileData);
+
   MPROTECT(shellcode, len);
 
   ((void (*)(void))shellcode)();
 
-  return 0;
+  return EXIT_SUCCESS;
 }
