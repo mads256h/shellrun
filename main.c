@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,12 +10,6 @@
 #include "util.h"
 
 #define BUF_SIZE 512
-
-enum arguments {
-  a_none = 0,
-  a_debug = 1 << 0,
-  a_clear = 1 << 1,
-};
 
 void print_help(char *program_name) {
   fprintf(stderr, "%s Version %d.%d\n", program_name, shellrun_VERSION_MAJOR,
@@ -41,13 +36,14 @@ int main(int argc, char **argv) {
     return EXIT_FAILURE;
   }
 
-  enum arguments args = a_none;
+  bool a_debug = false;
+  bool a_clear = false;
 
   for (int i = 1; i < argc - 1; i++) {
     if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--debug") == 0) {
-      args |= a_debug;
+      a_debug = true;
     } else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
-      args |= a_clear;
+      a_clear = true;
     } else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
       print_help(argv[0]);
       return 1;
@@ -84,16 +80,16 @@ int main(int argc, char **argv) {
   while ((c = getc(f)) != EOF) {
     if (cur_size == len) {
       cur_size += BUF_SIZE;
-      uint8_t *const d = (uint8_t *)malloc(cur_size);
+      uint8_t *const newFileData = (uint8_t *)malloc(cur_size);
 
-      if (!d) {
-        fputs("Could not allocate d", stderr);
+      if (!newFileData) {
+        fputs("Could not allocate newFileData", stderr);
         return EXIT_FAILURE;
       }
 
-      memcpy(d, fileData, len);
+      memcpy(newFileData, fileData, len);
       free(fileData);
-      fileData = d;
+      fileData = newFileData;
     }
     fileData[len] = (uint8_t)c;
     len++;
@@ -104,11 +100,11 @@ int main(int argc, char **argv) {
   }
 
   size_t final_len = len;
-  if ((args & a_debug) == a_debug) {
-    final_len += sizeof(int3);
+  if (a_debug) {
+    final_len += sizeof(asm_int3);
   }
-  if ((args & a_clear) == a_clear) {
-    final_len += sizeof(clear);
+  if (a_clear) {
+    final_len += sizeof(asm_clear);
   }
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
@@ -128,13 +124,13 @@ int main(int argc, char **argv) {
 
   size_t i = 0;
 
-  if ((args & a_clear) == a_clear) {
-    memcpy(shellcode, clear, sizeof(clear));
-    i += sizeof(clear);
+  if (a_clear) {
+    memcpy(shellcode, asm_clear, sizeof(asm_clear));
+    i += sizeof(asm_clear);
   }
-  if ((args & a_debug) == a_debug) {
-    memcpy(shellcode + i, int3, sizeof(int3));
-    i += sizeof(int3);
+  if (a_debug) {
+    memcpy(shellcode + i, asm_int3, sizeof(asm_int3));
+    i += sizeof(asm_int3);
   }
 
   memcpy(shellcode + i, fileData, len);

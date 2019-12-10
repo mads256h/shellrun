@@ -5,11 +5,11 @@
 
 #include "util.h"
 
-const uint8_t int3[] = {'\xCC'};
+const uint8_t asm_int3[] = {'\xCC'};
 
 #ifdef ENVIRONMENT64
 // 64-bit version
-const uint8_t clear[] = {
+const uint8_t asm_clear[] = {
     // Clear all registers
     '\x48', '\x31', '\xC0', // xor    rax,rax
     '\x48', '\x31', '\xDB', // xor    rbx,rbx
@@ -30,7 +30,7 @@ const uint8_t clear[] = {
 };
 #else
 // 32-bit version
-const uint8_t clear[] = {
+const uint8_t asm_clear[] = {
     // Clear all registers
     '\x31', '\xC0', // xor    eax,eax
     '\x31', '\xDB', // xor    ebx,ebx

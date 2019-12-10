@@ -37,7 +37,14 @@
                               &previous_access);                               \
                                                                                \
     if (!ret) {                                                                \
-      printf("VirtualProtect\n");                                              \
+      LPSTR messageBuffer = 0;                                                 \
+      size_t size = FormatMessageA(                                            \
+          FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |        \
+              FORMAT_MESSAGE_IGNORE_INSERTS,                                   \
+          NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),     \
+          (LPSTR)&messageBuffer, 0, NULL);                                     \
+                                                                               \
+      printf("VirtualProtect error: %s\n", messageBuffer);                     \
       return EXIT_FAILURE;                                                     \
     }                                                                          \
   }
@@ -47,11 +54,9 @@
 #include <unistd.h>
 #define MPROTECT(shellcode, length)                                            \
   {                                                                            \
-    int res =                                                                  \
-        mprotect(shellcode, pagesize, PROT_EXEC | PROT_READ | PROT_WRITE);     \
+    int res = mprotect(shellcode, length, PROT_EXEC | PROT_READ | PROT_WRITE); \
     if (res) {                                                                 \
-      fprintf(stderr, "mprotect error:%d\n", res);                             \
-      fprintf(stderr, "errno:%d\n", errno);                                    \
+      perror("mprotect error");                                                \
       return 1;                                                                \
     }                                                                          \
   }
