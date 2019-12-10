@@ -15,11 +15,12 @@ MainCode:
 	mov edi, STD_OUTPUT
 	lea esi, [msg - MainCode + ebx]
 	mov edx, msglen
-	syscall
+    xor ebx,ebx
+	int 0x80
  
 	mov eax, SYS_EXIT
 	mov edi, 0
-	syscall
+	int 0x80
 
     msg: db "Hello World!\n"
 	msglen equ $-msg
