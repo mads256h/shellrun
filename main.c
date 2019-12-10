@@ -17,8 +17,8 @@ enum flags {
 };
 
 void print_help(char *program_name) {
-  printf("%s Version %d.%d\n", program_name, ShellCodeRunner_VERSION_MAJOR,
-         ShellCodeRunner_VERSION_MINOR);
+  printf("%s Version %d.%d\n", program_name, shellrun_VERSION_MAJOR,
+         shellrun_VERSION_MINOR);
   printf("Usage: %s [args] file\n", program_name);
   puts("Arguments");
   puts(" -d OR --debug   Set a breakpoint just before shellcode executes");
