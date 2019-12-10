@@ -21,5 +21,5 @@ MainCode:
 	mov ebx, 0
 	int 0x80
 
-    msg: db "Hello World!\n"
+    msg: db `Hello World!\n`
 	msglen equ $-msg
