@@ -63,6 +63,11 @@ int main(int argc, char **argv) {
     f = stdin;
   } else {
     f = fopen(argv[argc - 1], "rb");
+
+    if (!f) {
+      perror("Could not open file");
+      return EXIT_FAILURE;
+    }
   }
 
   uint8_t *fileData = (uint8_t *)malloc(BUF_SIZE);
