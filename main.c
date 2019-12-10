@@ -10,10 +10,10 @@
 #include "config.h"
 #include "util.h"
 
-enum flags {
-  f_none = 0,
-  f_debug = 1 << 0,
-  f_clear = 1 << 1,
+enum arguments {
+  a_none = 0,
+  a_debug = 1 << 0,
+  a_clear = 1 << 1,
 };
 
 void print_help(char *program_name) {
@@ -40,13 +40,13 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  enum flags flag = f_none;
+  enum arguments args = a_none;
 
   for (int i = 1; i < argc - 1; i++) {
     if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--debug") == 0) {
-      flag |= f_debug;
+      args |= a_debug;
     } else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
-      flag |= f_clear;
+      args |= a_clear;
     } else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
       print_help(argv[0]);
       return 1;
@@ -68,10 +68,10 @@ int main(int argc, char **argv) {
   fclose(f);
 
   long final_len = len;
-  if ((flag & f_debug) == f_debug) {
+  if ((args & a_debug) == a_debug) {
     final_len += sizeof(int3);
   }
-  if ((flag & f_clear) == f_clear) {
+  if ((args & a_clear) == a_clear) {
     final_len += sizeof(clear);
   }
 
@@ -87,11 +87,11 @@ int main(int argc, char **argv) {
 
   size_t i = 0;
 
-  if ((flag & f_clear) == f_clear) {
+  if ((args & a_clear) == a_clear) {
     memcpy(shellcode, clear, sizeof(clear));
     i += sizeof(clear);
   }
-  if ((flag & f_debug) == f_debug) {
+  if ((args & a_debug) == a_debug) {
     memcpy(shellcode + i, int3, sizeof(int3));
     i += sizeof(int3);
   }
