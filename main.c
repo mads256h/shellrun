@@ -57,8 +57,13 @@ int main(int argc, char **argv) {
     }
   }
 
-  FILE *f =
-      strcmp(argv[argc - 1], "-") == 0 ? stdin : fopen(argv[argc - 1], "rb");
+  FILE *f = 0;
+
+  if (strcmp(argv[argc - 1], "-") == 0) {
+    f = stdin;
+  } else {
+    f = fopen(argv[argc - 1], "rb");
+  }
 
   uint8_t *fileData = (uint8_t *)malloc(BUF_SIZE);
 
