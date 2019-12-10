@@ -34,7 +34,8 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  if (strcmp(argv[argc - 1], "-h") == 0 || strcmp(argv[argc - 1], "--help") == 0) {
+  if (strcmp(argv[argc - 1], "-h") == 0 ||
+      strcmp(argv[argc - 1], "--help") == 0) {
     print_help(argv[0]);
     return 1;
   }
@@ -43,9 +44,9 @@ int main(int argc, char **argv) {
 
   for (int i = 1; i < argc - 1; i++) {
     if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--debug") == 0) {
-      flag = flag | f_debug;
+      flag |= f_debug;
     } else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
-      flag = flag | f_clear;
+      flag |= f_clear;
     } else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
       print_help(argv[0]);
       return 1;

@@ -6,7 +6,7 @@ section .text
 global start
  
 start:
-call MainCode
+    call MainCode
 	
  
 MainCode:
