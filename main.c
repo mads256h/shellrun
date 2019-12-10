@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
 
   bool a_debug = false;
   bool a_clear = false;
-  bool is_stdin = false;
+  bool is_stdin = strcmp(argv[argc - 1], "-") == 0;
 
   for (int i = 1; i < argc - 1; i++) {
     if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--debug") == 0) {
@@ -58,8 +58,6 @@ int main(int argc, char **argv) {
       return EXIT_FAILURE;
     }
   }
-
-  is_stdin = strcmp(argv[argc - 1], "-") == 0;
 
   FILE *f = 0;
 
@@ -97,9 +95,8 @@ int main(int argc, char **argv) {
     len++;
   }
 
-  if (!is_stdin) {
+  if (!is_stdin)
     fclose(f);
-  }
 
   size_t final_len = len;
   if (a_debug) {
@@ -119,8 +116,6 @@ int main(int argc, char **argv) {
 
   if (!shellcode)
     die("Could not allocate shellcode");
-
-  memset(shellcode, 0x90, final_len);
 
   size_t i = 0;
 
