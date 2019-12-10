@@ -23,6 +23,11 @@ void print_help(char *program_name) {
   // clang-format on
 }
 
+void die(const char const *msg) {
+  perror(msg);
+  exit(EXIT_FAILURE);
+}
+
 int main(int argc, char **argv) {
   if (argc == 1) {
     // report version
@@ -38,6 +43,7 @@ int main(int argc, char **argv) {
 
   bool a_debug = false;
   bool a_clear = false;
+  bool is_stdin = false;
 
   for (int i = 1; i < argc - 1; i++) {
     if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--debug") == 0) {
@@ -53,25 +59,23 @@ int main(int argc, char **argv) {
     }
   }
 
+  is_stdin = strcmp(argv[argc - 1], "-") == 0;
+
   FILE *f = 0;
 
-  if (strcmp(argv[argc - 1], "-") == 0) {
+  if (is_stdin) {
     f = stdin;
   } else {
     f = fopen(argv[argc - 1], "rb");
 
-    if (!f) {
-      perror("Could not open file");
-      return EXIT_FAILURE;
-    }
+    if (!f)
+      die("Could not open file");
   }
 
   uint8_t *fileData = (uint8_t *)malloc(BUF_SIZE);
 
-  if (!fileData) {
-    fputs("Could not allocate fileData", stderr);
-    return EXIT_FAILURE;
-  }
+  if (!fileData)
+    die("Could not allocate fileData");
 
   size_t cur_size = BUF_SIZE;
   size_t len = 0;
@@ -82,10 +86,8 @@ int main(int argc, char **argv) {
       cur_size += BUF_SIZE;
       uint8_t *const newFileData = (uint8_t *)malloc(cur_size);
 
-      if (!newFileData) {
-        fputs("Could not allocate newFileData", stderr);
-        return EXIT_FAILURE;
-      }
+      if (!newFileData)
+        die("Could not allocate newFileData");
 
       memcpy(newFileData, fileData, len);
       free(fileData);
@@ -95,7 +97,7 @@ int main(int argc, char **argv) {
     len++;
   }
 
-  if (strcmp(argv[argc - 1], "-") != 0) {
+  if (!is_stdin) {
     fclose(f);
   }
 
@@ -115,10 +117,8 @@ int main(int argc, char **argv) {
   uint8_t *const shellcode = (uint8_t *)memalign(pagesize, final_len);
 #endif
 
-  if (!shellcode) {
-    fputs("Could not allocate shellcode", stderr);
-    return EXIT_FAILURE;
-  }
+  if (!shellcode)
+    die("Could not allocate shellcode");
 
   memset(shellcode, 0x90, final_len);
 
