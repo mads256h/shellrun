@@ -1,5 +1,5 @@
-SYS_WRITE equ 1
-SYS_EXIT equ 60
+SYS_WRITE equ 4
+SYS_EXIT equ 1
 STD_OUTPUT equ 1
  
 section .text
@@ -10,16 +10,15 @@ call MainCode
 	
  
 MainCode:
-    pop ebx
+    pop esi
 	mov eax, SYS_WRITE
-	mov edi, STD_OUTPUT
-	lea esi, [msg - MainCode + ebx]
+	mov ebx, STD_OUTPUT
+	lea ecx, [msg - MainCode + esi]
 	mov edx, msglen
-    xor ebx,ebx
 	int 0x80
  
 	mov eax, SYS_EXIT
-	mov edi, 0
+	mov ebx, 0
 	int 0x80
 
     msg: db "Hello World!\n"
