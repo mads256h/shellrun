@@ -1,8 +1,8 @@
+#include <errno.h>
 #include <malloc.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
 
 #include <sys/stat.h>
 
@@ -16,28 +16,41 @@ enum flags {
   f_clear = 1 << 1,
 };
 
+void print_help(char *program_name) {
+  printf("%s Version %d.%d\n", program_name, ShellCodeRunner_VERSION_MAJOR,
+         ShellCodeRunner_VERSION_MINOR);
+  printf("Usage: %s [args] file\n", program_name);
+  puts("Arguments");
+  puts(" -d OR --debug   Set a breakpoint just before shellcode executes");
+  puts(" -c OR --clear   Clear all registers before running the shellcode");
+  puts(" -h OR --help    To print this help message");
+}
+
 int main(int argc, char **argv) {
   if (argc == 1) {
     // report version
-    printf("%s Version %d.%d\n", argv[0], ShellCodeRunner_VERSION_MAJOR,
-           ShellCodeRunner_VERSION_MINOR);
-    printf("Usage: %s [args] file\n", argv[0]);
-    puts("Flags");
-    puts(" --debug   Set a breakpoint just before shellcode executes");
-    puts(" --clear   Clear all registers before running the shellcode");
+    print_help(argv[0]);
 
+    return 1;
+  }
+
+  if (strcmp(argv[argc - 1], "-h") == 0 || strcmp(argv[argc - 1], "--help") == 0) {
+    print_help(argv[0]);
     return 1;
   }
 
   enum flags flag = f_none;
 
   for (int i = 1; i < argc - 1; i++) {
-    if (strcmp(argv[i], "--debug") == 0) {
+    if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--debug") == 0) {
       flag = flag | f_debug;
-    } else if (strcmp(argv[i], "--clear") == 0) {
+    } else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
       flag = flag | f_clear;
+    } else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+      print_help(argv[0]);
+      return 1;
     } else {
-      fprintf(stderr, "Invalid argument\n");
+      fputs("Invalid argument", stderr);
       return 1;
     }
   }
