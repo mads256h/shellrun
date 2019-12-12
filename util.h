@@ -45,6 +45,7 @@
           (LPSTR)&messageBuffer, 0, NULL);                                     \
                                                                                \
       printf("VirtualProtect error: %s\n", messageBuffer);                     \
+      LocalFree(messageBuffer);                                                \
       return EXIT_FAILURE;                                                     \
     }                                                                          \
   }

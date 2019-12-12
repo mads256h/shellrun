@@ -5,6 +5,7 @@
 
 #include "util.h"
 
+// value for the instruction int3
 const uint8_t asm_int3[] = {'\xCC'};
 
 #ifdef ENVIRONMENT64
