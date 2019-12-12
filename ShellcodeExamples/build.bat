@@ -6,3 +6,4 @@ for /R %%i in (*.asm) do (
     cd %back%
 )
 cd %back%
+pause
