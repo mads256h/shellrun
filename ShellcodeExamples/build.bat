@@ -5,5 +5,4 @@ for /R %%i in (*.asm) do (
     nasm -o "%%~ni.bin" -f bin "%%i"
     cd %back%
 )
-cd %back%
 pause
