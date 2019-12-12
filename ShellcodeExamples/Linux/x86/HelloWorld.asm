@@ -1,7 +1,9 @@
+BITS 32
+
 SYS_WRITE equ 4
 SYS_EXIT equ 1
 STD_OUTPUT equ 1
- 
+
 section .text
 global start
  

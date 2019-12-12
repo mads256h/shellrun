@@ -1,3 +1,5 @@
+BITS 64
+
 extern GetStdHandle
 extern WriteFile
 extern ExitProcess

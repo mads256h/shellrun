@@ -1,14 +1,17 @@
+BITS 64
+
 SYS_WRITE equ 1
 SYS_EXIT equ 60
 STD_OUTPUT equ 1
 
 section .text
 global start
+global _start
 
 start:
+_start:
     call MainCode
-	
- 
+
 MainCode:
     pop rsi
     mov rax, SYS_WRITE
