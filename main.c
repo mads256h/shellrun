@@ -17,8 +17,8 @@ void print_help(char *program_name) {
   // clang-format off
   fprintf(stderr, "Usage: %s [args] file\n", program_name);
   fprintf(stderr, "Arguments\n");
-  fprintf(stderr, " -d OR --debug   Set a breakpoint just before shellcode executes\n");
   fprintf(stderr, " -c OR --clear   Clear all registers before running the shellcode\n");
+  fprintf(stderr, " -d OR --debug   Set a breakpoint just before shellcode executes\n");
   fprintf(stderr, " -h OR --help    To print this help message\n");
   // clang-format on
 }
@@ -41,18 +41,18 @@ int main(int argc, char **argv) {
     return EXIT_FAILURE;
   }
 
-  bool a_debug = false;
-  bool a_clear = false;
+  bool is_clear = false;
+  bool is_debug = false;
   bool is_stdin = strcmp(argv[argc - 1], "-") == 0;
 
   for (int i = 1; i < argc - 1; i++) {
-    if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--debug") == 0) {
-      a_debug = true;
-    } else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
-      a_clear = true;
+    if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
+      is_clear = true;
+    } else if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--debug") == 0) {
+      is_debug = true;
     } else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
       print_help(argv[0]);
-      return 1;
+      return EXIT_FAILURE;
     } else {
       fputs("Invalid argument", stderr);
       return EXIT_FAILURE;
@@ -99,11 +99,13 @@ int main(int argc, char **argv) {
     fclose(f);
 
   size_t final_len = len;
-  if (a_debug) {
-    final_len += sizeof(asm_int3);
-  }
-  if (a_clear) {
+
+  if (is_clear) {
     final_len += sizeof(asm_clear);
+  }
+
+  if (is_debug) {
+    final_len += sizeof(asm_int3);
   }
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
@@ -119,11 +121,11 @@ int main(int argc, char **argv) {
 
   size_t i = 0;
 
-  if (a_clear) {
+  if (is_clear) {
     memcpy(shellcode, asm_clear, sizeof(asm_clear));
     i += sizeof(asm_clear);
   }
-  if (a_debug) {
+  if (is_debug) {
     memcpy(shellcode + i, asm_int3, sizeof(asm_int3));
     i += sizeof(asm_int3);
   }
