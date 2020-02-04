@@ -25,3 +25,7 @@
  Shellrun also supports running shellcode from stdin:
 
  ```cat shellcode | shellrun -```
+
+## Building the shellcode examples
+
+ First make sure that you have nasm installed and that it is in your global path. _This is easiest with scoop_. Then simply for Windows run ```build.bat``` and for Linux run ```build.sh``` (does not exist yet).
