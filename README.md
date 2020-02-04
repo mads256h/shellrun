@@ -2,6 +2,8 @@
 
  Runs binary shell code. Also includes debugging and compatibillity features.
 
+ The goal of this project is to create a simple portable shellcode-running program.
+
 ## Building
 
  Run cmake on this repository to generate a project for your compiler. **Remember you cannot mix bitness e.g. x32 shellcode on x64 shellrun** To run 32-bit shellcode build shellrun as 32-bit and vice versa.
