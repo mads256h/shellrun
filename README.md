@@ -16,7 +16,7 @@
 
  Currently supported arguments:
 
-```bash
+```txt
  -c OR --clear   Clear all registers before running the shellcode.
  -d OR --debug   Set a breakpoint just before shellcode executes.
  -h OR --help    To print this help message.
