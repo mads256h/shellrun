@@ -1,12 +1,12 @@
 # Copyright (c) 2019-2020 Luca Cappa
 # Released under the term specified in file LICENSE.txt
 # SPDX short identifier: MIT
-name: hosted-basic
+name: cmake-build
 on: [push]
 
 jobs:
   job:
-    name: ${{ matrix.os }}-hosted-basic
+    name: ${{ matrix.os }}-cmake-build
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
