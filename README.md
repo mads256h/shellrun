@@ -1,5 +1,7 @@
 # shellrun
 
+ ![cmake-build](https://github.com/mads256h/shellrun/workflows/cmake-build/badge.svg)
+
  Runs binary shell code. Also includes debugging and compatibillity features.
 
  The goal of this project is to create a simple portable shellcode-running program.

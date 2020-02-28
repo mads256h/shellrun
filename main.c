@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
 
   bool is_clear = false;
   bool is_debug = false;
-  bool is_stdin = strcmp(argv[argc - 1], "-") == 0;
+  const bool is_stdin = strcmp(argv[argc - 1], "-") == 0;
 
   for (int i = 1; i < argc - 1; i++) {
     if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
