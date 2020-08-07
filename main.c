@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
 
   free(fileData);
 
-  MPROTECT(shellcode, len);
+  MPROTECT(shellcode, final_len);
 
   ((void (*)(void))shellcode)();
 
