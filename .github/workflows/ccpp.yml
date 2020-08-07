@@ -26,7 +26,7 @@ jobs:
         with:
           submodules: true
       - name: Run CMake+Ninja without triplet
-        uses: lukka/run-cmake@v0
+        uses: lukka/run-cmake@v1
         id: runcmake
         with:
          # cmakeGenerator: 'Ninja'  
