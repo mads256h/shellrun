@@ -9,25 +9,7 @@
 #define check_for_argument(argv, short, long)                                  \
   (strcmp(argv, "-" short) == 0 || strcmp(argv, "--" long) == 0)
 
-// Check windows
-#if _WIN32 || _WIN64
-#if _WIN64
-#define ENVIRONMENT64
-#else
-#define ENVIRONMENT32
-#endif
-#endif
-
-// Check GCC
-#if __GNUC__
-#if __x86_64__ || __ppc64__
-#define ENVIRONMENT64
-#else
-#define ENVIRONMENT32
-#endif
-#endif
-
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#ifdef WINDOWS
 #include <Windows.h>
 #define MPROTECT(shellcode, length)                                            \
   {                                                                            \
