@@ -56,11 +56,18 @@ int main(int argc, char *argv[]) {
     final_len += sizeof(asm_int3);
   }
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#ifdef WINDOWS
   uint8_t *const shellcode = (uint8_t *)malloc(final_len);
 #else
   const long pagesize = sysconf(_SC_PAGE_SIZE);
-  uint8_t *const shellcode = (uint8_t *)memalign(pagesize, final_len);
+  if (pagesize == -1) {
+    die("Couldnt get page size");
+  }
+
+  uint8_t *const shellcode;
+  if (posix_memalign((void *)&shellcode, pagesize, final_len) != 0) {
+    die("Couldnt memalign");
+  }
 #endif
 
   if (!shellcode)
@@ -97,18 +104,14 @@ uint8_t *alloc_file(FILE *const file, size_t *const file_len) {
   size_t cur_size = BUF_SIZE;
   *file_len = 0;
 
-  int c = EOF;
+  int c;
   while ((c = getc(file)) != EOF) {
     if (cur_size == *file_len) {
       cur_size += BUF_SIZE;
-      uint8_t *const new_file_data = (uint8_t *)malloc(cur_size);
+      file_data = realloc(file_data, cur_size);
 
-      if (!new_file_data)
+      if (!file_data)
         die("Could not allocate new file data");
-
-      memcpy(new_file_data, file_data, *file_len);
-      free(file_data);
-      file_data = new_file_data;
     }
     file_data[*file_len] = (uint8_t)c;
     *file_len += 1;

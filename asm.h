@@ -3,12 +3,10 @@
 
 #include <stdint.h>
 
-#include "util.h"
-
 // value for the instruction int3
 const uint8_t asm_int3[] = {'\xCC'};
 
-#ifdef ENVIRONMENT64
+#ifdef BITS64
 // 64-bit version
 const uint8_t asm_clear[] = {
     // Clear all registers
