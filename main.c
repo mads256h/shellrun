@@ -60,7 +60,14 @@ int main(int argc, char *argv[]) {
   uint8_t *const shellcode = (uint8_t *)malloc(final_len);
 #else
   const long pagesize = sysconf(_SC_PAGE_SIZE);
-  uint8_t *const shellcode = (uint8_t *)memalign(pagesize, final_len);
+  if (pagesize == -1) {
+    die("Couldnt get page size");
+  }
+
+  uint8_t *const shellcode;
+  if (posix_memalign((void *)&shellcode, pagesize, final_len) != 0) {
+    die("Couldnt memalign");
+  }
 #endif
 
   if (!shellcode)
