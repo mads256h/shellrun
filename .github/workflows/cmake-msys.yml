@@ -20,27 +20,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - if: matrix.arch == 'i686'
-      name: Setup MSYS2
+  
+    - name: Setup MSYS2
       # You may pin to the exact commit or the version.
       # uses: msys2/setup-msys2@85b07cd9f310452566be859db1426bc664d08e9b
       uses: msys2/setup-msys2@v2
       with:
         # Update MSYS2 installation through pacman
         update: true
-        msystem: MINGW32
-        # Install packages after installation through pacman
-        install: mingw-w64-${{ matrix.arch }}-toolchain mingw-w64-${{ matrix.arch }}-cmake
-        
-    - if: matrix.arch == 'x86_64'
-      name: Setup MSYS2
-      # You may pin to the exact commit or the version.
-      # uses: msys2/setup-msys2@85b07cd9f310452566be859db1426bc664d08e9b
-      uses: msys2/setup-msys2@v2
-      with:
-        # Update MSYS2 installation through pacman
-        update: true
-        msystem: MINGW64
+        msystem: ${{ matrix.arch == 'i686' ? 'MINGW32' : 'MINGW64' }}
         # Install packages after installation through pacman
         install: mingw-w64-${{ matrix.arch }}-toolchain mingw-w64-${{ matrix.arch }}-cmake
 
