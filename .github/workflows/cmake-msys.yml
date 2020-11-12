@@ -1,4 +1,4 @@
-name: CMake Windows (${{ matrix.arch }})
+name: CMake Windows MSYS2
 
 on: [push]
 
