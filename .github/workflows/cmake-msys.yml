@@ -28,7 +28,7 @@ jobs:
       with:
         # Update MSYS2 installation through pacman
         update: true
-        msystem: ${{ matrix.arch == 'i686' ? 'MINGW32' : 'MINGW64' }}
+        msystem: ${{ matrix.arch == 'i686' && 'MINGW32' || 'MINGW64' }}
         # Install packages after installation through pacman
         install: mingw-w64-${{ matrix.arch }}-toolchain mingw-w64-${{ matrix.arch }}-cmake
 
