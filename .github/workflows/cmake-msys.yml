@@ -42,7 +42,7 @@ jobs:
         update: true
         msystem: MINGW64
         # Install packages after installation through pacman
-        install: mingw-w64-${{ matrix.arch }}-toolchain mingw-w64-${{ matrix.arch }}-cmake:  
+        install: mingw-w64-${{ matrix.arch }}-toolchain mingw-w64-${{ matrix.arch }}-cmake
 
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
